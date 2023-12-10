@@ -40,6 +40,21 @@ services:
     ports:
       - 1883:1883
 
+  node-red:
+    image: nodered/node-red
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - "1880:1880"
+    networks:
+      - node-red-net
+    volumes:
+      - node-red-data:/data
+
 volumes:
   grafana-storage:
   influxdb-storage:
+  node-red-data:
+
+networks:
+  node-red-net:
