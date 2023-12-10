@@ -29,6 +29,27 @@ services:
       - influxdb
     ports:
       - ${GRAFANA_PORT}:3000
+  
+  mosquitto-container:
+    restart: always
+    image: eclipse-mosquitto
+    volumes:
+      - ${MOSQUITTO_CFG_PATH}:/mosquitto/config/mosquitto.conf:ro
+    env_file:
+      - .env
+    ports:
+      - 1883:1883
+  
+  node-red:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - "1880:1880"
+    networks:
+      - node-red-net
+    volumes:
+      - node-red-data:/data
 
 volumes:
   grafana-storage:
