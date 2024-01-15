@@ -81,7 +81,7 @@
         "type": "file in",
         "z": "f6f2187d.f17ca8",
         "name": "Sensor data",
-        "filename": "/Users/aarohigarg/Documents/Semester 3/IOT/SmartAquarium/aquarium_sensor_data.csv",
+        "filename": "/sensor.csv",
         "filenameType": "str",
         "format": "utf8",
         "chunk": false,
@@ -132,8 +132,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 730,
-        "y": 420,
+        "x": 1230,
+        "y": 360,
         "wires": []
     },
     {
@@ -141,7 +141,7 @@
         "type": "mqtt out",
         "z": "f6f2187d.f17ca8",
         "name": "",
-        "topic": "aquarium",
+        "topic": "aquarium/oxygen",
         "qos": "2",
         "retain": "",
         "respTopic": "",
@@ -150,8 +150,8 @@
         "correl": "",
         "expiry": "",
         "broker": "e681f45cf6edd760",
-        "x": 580,
-        "y": 480,
+        "x": 1250,
+        "y": 300,
         "wires": []
     },
     {
@@ -175,8 +175,272 @@
         "y": 300,
         "wires": [
             [
-                "af0ed5e7e6432db4",
-                "bd550aee79e277e1"
+                "0604adf5e5078d74"
+            ]
+        ]
+    },
+    {
+        "id": "4291b9f2b4f0793d",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "get_oxygen",
+        "func": "// Check if the message contains a property named 'payload' with JSON data\nif (msg.payload) {\n    try {\n        // Parse the JSON payload\n        const rowData = JSON.parse(msg.payload);\n\n        if (rowData[\"Oxygen (mg/L)\"] !== undefined) {\n            const value = rowData[\"Oxygen (mg/L)\"];\n\n            // Update the 'payload' property of the message with the extracted 'Temperature' value\n            msg.payload = value;\n\n            // Send the updated message to the next node in the flow\n            return msg;\n        } else {\n            return { payload: 'The \"temperature\" property is missing in the JSON data.' };\n        }\n    } catch (error) {\n        // If JSON parsing fails, send an error message\n        console.log(msg.payload);\n        return { payload: 'Error parsing JSON data: ' + error.message };\n    }\n} else {\n    // If 'payload' property is not found, send an error message\n    return { payload: 'JSON data not found in the input message.' };\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 300,
+        "wires": [
+            [
+                "bd550aee79e277e1",
+                "af0ed5e7e6432db4"
+            ]
+        ]
+    },
+    {
+        "id": "0604adf5e5078d74",
+        "type": "json",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 830,
+        "y": 300,
+        "wires": [
+            [
+                "4291b9f2b4f0793d",
+                "ac183c7082b83d7a",
+                "ba67c583540126d8",
+                "745752a9070b2eac",
+                "1d30f8f02389c1b5"
+            ]
+        ]
+    },
+    {
+        "id": "37885c06bebd6861",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Msg payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "370172a9f2ff6e5c",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "aquarium/ammonia",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e681f45cf6edd760",
+        "x": 1250,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "745752a9070b2eac",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "get_ammonia",
+        "func": "// Check if the message contains a property named 'payload' with JSON data\nif (msg.payload) {\n    try {\n        // Parse the JSON payload\n        const rowData = JSON.parse(msg.payload);\n\n        if (rowData[\"Ammonia-Nitrogen (mg/L)\"] !== undefined) {\n            const value = rowData[\"Ammonia-Nitrogen (mg/L)\"];\n\n            // Update the 'payload' property of the message with the extracted 'Temperature' value\n            msg.payload = value;\n\n            // Send the updated message to the next node in the flow\n            return msg;\n        } else {\n            return { payload: 'The \"ammonia\" property is missing in the JSON data.' };\n        }\n    } catch (error) {\n        // If JSON parsing fails, send an error message\n        console.log(msg.payload);\n        return { payload: 'Error parsing JSON data: ' + error.message };\n    }\n} else {\n    // If 'payload' property is not found, send an error message\n    return { payload: 'JSON data not found in the input message.' };\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 440,
+        "wires": [
+            [
+                "370172a9f2ff6e5c",
+                "37885c06bebd6861"
+            ]
+        ]
+    },
+    {
+        "id": "6259f2b0cee5f2d7",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Msg payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "fcdf768a6b9ad27f",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "aquarium/water_level",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e681f45cf6edd760",
+        "x": 1260,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "1d30f8f02389c1b5",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "get_water_level",
+        "func": "// Check if the message contains a property named 'payload' with JSON data\nif (msg.payload) {\n    try {\n        // Parse the JSON payload\n        const rowData = JSON.parse(msg.payload);\n\n        if (rowData[\"Water_Level (%)\"] !== undefined) {\n            const value = rowData[\"Water_Level (%)\"];\n\n            // Update the 'payload' property of the message with the extracted 'Temperature' value\n            msg.payload = value;\n\n            // Send the updated message to the next node in the flow\n            return msg;\n        } else {\n            return { payload: 'The \"water\" property is missing in the JSON data.' };\n        }\n    } catch (error) {\n        // If JSON parsing fails, send an error message\n        console.log(msg.payload);\n        return { payload: 'Error parsing JSON data: ' + error.message };\n    }\n} else {\n    // If 'payload' property is not found, send an error message\n    return { payload: 'JSON data not found in the input message.' };\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 580,
+        "wires": [
+            [
+                "fcdf768a6b9ad27f",
+                "6259f2b0cee5f2d7"
+            ]
+        ]
+    },
+    {
+        "id": "701ab5f9276cb4a1",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Msg payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "a5f5564cc4787e6f",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "aquarium/ph",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e681f45cf6edd760",
+        "x": 1230,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ac183c7082b83d7a",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "get_ph",
+        "func": "// Check if the message contains a property named 'payload' with JSON data\nif (msg.payload) {\n    try {\n        // Parse the JSON payload\n        const rowData = JSON.parse(msg.payload);\n\n        // Check if the 'ph' property exists in the JSON object\n        if (rowData.pH !== undefined) {\n            // Extract the 'ph' value\n            const phValue = rowData.pH;\n\n            // Update the 'payload' property of the message with the extracted 'ph' value\n            msg.payload = phValue;\n\n            // Send the updated message to the next node in the flow\n            return msg;\n        } else {\n            // If 'ph' property is not found, send an error message\n            return { payload: 'The \"ph\" property is missing in the JSON data.' };\n        }\n    } catch (error) {\n        // If JSON parsing fails, send an error message\n        console.log(msg.payload);\n        return { payload: 'Error parsing JSON data: ' + error.message };\n    }\n} else {\n    // If 'payload' property is not found, send an error message\n    return { payload: 'JSON data not found in the input message.' };\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 180,
+        "wires": [
+            [
+                "a5f5564cc4787e6f",
+                "701ab5f9276cb4a1"
+            ]
+        ]
+    },
+    {
+        "id": "44eb01cc5ee8dc2b",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Msg payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "9e1a8fced56a06a9",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "aquarium/temperature",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e681f45cf6edd760",
+        "x": 1260,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ba67c583540126d8",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "get_temperature",
+        "func": "// Check if the message contains a property named 'payload' with JSON data\nif (msg.payload) {\n    try {\n        // Parse the JSON payload\n        const rowData = JSON.parse(msg.payload);\n\n        if (rowData[\"Temperature (°C)\"] !== undefined) {\n            const temperatureValue = rowData[\"Temperature (°C)\"];\n\n            // Update the 'payload' property of the message with the extracted 'Temperature' value\n            msg.payload = temperatureValue;\n\n            // Send the updated message to the next node in the flow\n            return msg;\n        } else {\n            return { payload: 'The \"temperature\" property is missing in the JSON data.' };\n        }\n    } catch (error) {\n        // If JSON parsing fails, send an error message\n        console.log(msg.payload);\n        return { payload: 'Error parsing JSON data: ' + error.message };\n    }\n} else {\n    // If 'payload' property is not found, send an error message\n    return { payload: 'JSON data not found in the input message.' };\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 60,
+        "wires": [
+            [
+                "9e1a8fced56a06a9",
+                "44eb01cc5ee8dc2b"
             ]
         ]
     }
