@@ -1,42 +1,67 @@
-version: "3"
+
+version: '3.6'
 
 services:
   influxdb:
-    image: influxdb:2.1.1
-    volumes:
-      - influxdb-storage:/var/lib/influxdb2:rw
-    env_file:
-      - .env
-    entrypoint: ["./entrypoint.sh"]
-    restart: on-failure:10
+    image: influxdb:2.4-alpine
+    container_name: influxdb
+    restart: always
+    environment:
+
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_BUCKET=aqua-bucket
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=aqua-org
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=aqua_token
+
     ports:
-      - ${DOCKER_INFLUXDB_INIT_PORT}:8086
+      - '8086:8086'
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
 
   telegraf:
-    image: telegraf:1.19
+    image: telegraf
+    container_name: telegraf
+    restart: always
     volumes:
-      - ${TELEGRAF_CFG_PATH}:/etc/telegraf/telegraf.conf:rw
-    env_file:
-      - .env
+    - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
       - influxdb
-
-  grafana:
-    image: grafana/grafana-oss:8.4.3
-    volumes:
-      - grafana-storage:/var/lib/grafana:rw
-    depends_on:
+      - mosquitto-container
+    links:
       - influxdb
     ports:
-      - ${GRAFANA_PORT}:3000
+      - '8125:8125' 
+
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-server
+    restart: always
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=
+    links:
+      - influxdb
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+
   
   mosquitto-container:
     restart: always
     image: eclipse-mosquitto
     volumes:
-      - ${MOSQUITTO_CFG_PATH}:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     env_file:
       - .env
+    networks:
+      - local-net
     ports:
       - 1883:1883
 
@@ -47,14 +72,14 @@ services:
     ports:
       - "1880:1880"
     networks:
-      - node-red-net
+      - local-net
     volumes:
       - node-red-data:/data
 
 volumes:
-  grafana-storage:
-  influxdb-storage:
-  node-red-data:
+  grafana_data: 
+  influxdb_data: 
+  node-red-data: 
 
 networks:
-  node-red-net:
+  local-net:
