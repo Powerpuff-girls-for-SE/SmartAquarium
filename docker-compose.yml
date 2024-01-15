@@ -65,16 +65,24 @@ services:
     ports:
       - 1883:1883
 
+  # node-red:
+  #   image: nodered/node-red
+  #   environment:
+  #     - TZ=Europe/Amsterdam
+  #   ports:
+  #     - "1880:1880"
+  #   networks:
+  #     - local-net
+  #   volumes:
+  #     - node-red-data:/data
+
   node-red:
-    image: nodered/node-red
-    environment:
-      - TZ=Europe/Amsterdam
+    restart: always
+    build: docker-nodered/
     ports:
-      - "1880:1880"
+      - 1880:1880
     networks:
       - local-net
-    volumes:
-      - node-red-data:/data
 
 volumes:
   grafana_data: 
