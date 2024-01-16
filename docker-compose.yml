@@ -19,20 +19,26 @@ services:
       - '8086:8086'
     volumes:
       - influxdb_data:/var/lib/influxdb2
+    networks:
+      aquarium-net:
+        ipv4_address: 172.10.0.10
 
-  telegraf:
-    image: telegraf
-    container_name: telegraf
-    restart: always
-    volumes:
-    - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    depends_on:
-      - influxdb
-      - mosquitto-container
-    links:
-      - influxdb
-    ports:
-      - '8125:8125' 
+  # telegraf:
+  #   image: telegraf
+  #   container_name: telegraf
+  #   restart: always
+  #   volumes:
+  #   - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+  #   depends_on:
+  #     - influxdb
+  #     - mosquitto-container
+  #   links:
+  #     - influxdb
+  #   ports:
+  #     - '8125:8125' 
+  #   networks:
+  #     aquarium-net:
+  #       ipv4_address: 172.10.0.11
 
 
   grafana:
@@ -51,6 +57,9 @@ services:
       - '3000:3000'
     volumes:
       - grafana_data:/var/lib/grafana
+    networks:
+      aquarium-net:
+        ipv4_address: 172.10.0.12
 
   
   mosquitto-container:
@@ -58,12 +67,11 @@ services:
     image: eclipse-mosquitto
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
-    env_file:
-      - .env
-    networks:
-      - local-net
     ports:
       - 1883:1883
+    networks:
+      aquarium-net:
+        ipv4_address: 172.10.0.13
 
   # node-red:
   #   image: nodered/node-red
@@ -82,7 +90,8 @@ services:
     ports:
       - 1880:1880
     networks:
-      - local-net
+      aquarium-net:
+        ipv4_address: 172.10.0.14
 
 volumes:
   grafana_data: 
@@ -90,4 +99,8 @@ volumes:
   node-red-data: 
 
 networks:
-  local-net:
+  aquarium-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.10.0.0/16
