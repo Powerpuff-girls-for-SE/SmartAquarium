@@ -23,24 +23,6 @@ services:
       aquarium-net:
         ipv4_address: 172.10.0.10
 
-  # telegraf:
-  #   image: telegraf
-  #   container_name: telegraf
-  #   restart: always
-  #   volumes:
-  #   - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-  #   depends_on:
-  #     - influxdb
-  #     - mosquitto-container
-  #   links:
-  #     - influxdb
-  #   ports:
-  #     - '8125:8125' 
-  #   networks:
-  #     aquarium-net:
-  #       ipv4_address: 172.10.0.11
-
-
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -60,7 +42,6 @@ services:
     networks:
       aquarium-net:
         ipv4_address: 172.10.0.12
-
   
   mosquitto-container:
     container_name: mqtt-container
@@ -91,17 +72,7 @@ services:
       - mosquitto-container
       - influxdb
 
-  # node-red:
-  #   restart: always
-  #   build: docker-nodered/
-  #   ports:
-  #     - 1880:1880
-  #   networks:
-  #     aquarium-net:
-  #       ipv4_address: 172.10.0.14
-
 volumes:
-  #grafana_data: 
   influxdb_data: 
 
 networks:
