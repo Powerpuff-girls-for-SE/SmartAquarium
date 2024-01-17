@@ -2,15 +2,23 @@
     {
         "id": "f6f2187d.f17ca8",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Publish Data",
         "disabled": false,
         "info": ""
+    },
+    {
+        "id": "494c2f7236aa3a08",
+        "type": "tab",
+        "label": "Subscribe Data",
+        "disabled": false,
+        "info": "",
+        "env": []
     },
     {
         "id": "e681f45cf6edd760",
         "type": "mqtt-broker",
         "name": "Mosquitto",
-        "broker": "smartaquarium-mosquitto-container-1:1883",
+        "broker": "172.10.0.13:1883",
         "port": "1883",
         "clientid": "",
         "autoConnect": true,
@@ -66,7 +74,7 @@
         "id": "0f232f6b27593567",
         "type": "inject",
         "z": "f6f2187d.f17ca8",
-        "name": "",
+        "name": "Sensors",
         "props": [
             {
                 "p": "payload"
@@ -84,7 +92,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 100,
-        "y": 240,
+        "y": 300,
         "wires": [
             [
                 "5454c5cbffa094ee"
@@ -103,8 +111,8 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 250,
-        "y": 320,
+        "x": 270,
+        "y": 300,
         "wires": [
             [
                 "da87f4ed68031abc"
@@ -115,7 +123,7 @@
         "id": "da87f4ed68031abc",
         "type": "csv",
         "z": "f6f2187d.f17ca8",
-        "name": "",
+        "name": "Reading Data",
         "sep": ",",
         "hdrin": true,
         "hdrout": "none",
@@ -126,8 +134,8 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 450,
-        "y": 320,
+        "x": 460,
+        "y": 300,
         "wires": [
             [
                 "41bf5d1d102b1fb5"
@@ -186,7 +194,7 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 640,
+        "x": 660,
         "y": 300,
         "wires": [
             [
@@ -462,7 +470,7 @@
     {
         "id": "b8393f1e2c78411c",
         "type": "mqtt in",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "",
         "topic": "aquarium/ph",
         "qos": "2",
@@ -472,8 +480,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 190,
-        "y": 480,
+        "x": 270,
+        "y": 100,
         "wires": [
             [
                 "ac997bca016276ec",
@@ -484,7 +492,7 @@
     {
         "id": "ac997bca016276ec",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "subscribe ph",
         "active": true,
         "tosidebar": true,
@@ -494,14 +502,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 410,
-        "y": 440,
+        "x": 490,
+        "y": 60,
         "wires": []
     },
     {
         "id": "3fc203ec33d11c54",
         "type": "influxdb out",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "influxdb": "180f36df41b25787",
         "name": "influxdb ph",
         "measurement": "ph",
@@ -512,14 +520,14 @@
         "retentionPolicyV18Flux": "",
         "org": "aqua-org",
         "bucket": "aqua-bucket",
-        "x": 410,
-        "y": 500,
+        "x": 490,
+        "y": 120,
         "wires": []
     },
     {
         "id": "044695a11ee88bfe",
         "type": "mqtt in",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "",
         "topic": "aquarium/temperature",
         "qos": "2",
@@ -529,8 +537,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 180,
-        "y": 620,
+        "x": 260,
+        "y": 240,
         "wires": [
             [
                 "c951ee3a12a5f49c",
@@ -541,7 +549,7 @@
     {
         "id": "c951ee3a12a5f49c",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "subscribe temperature",
         "active": true,
         "tosidebar": true,
@@ -551,14 +559,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 440,
-        "y": 580,
+        "x": 520,
+        "y": 200,
         "wires": []
     },
     {
         "id": "0b10dd1205a2d122",
         "type": "influxdb out",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "influxdb": "180f36df41b25787",
         "name": "influxdb temperature",
         "measurement": "temperature",
@@ -569,14 +577,14 @@
         "retentionPolicyV18Flux": "",
         "org": "aqua-org",
         "bucket": "aqua-bucket",
-        "x": 440,
-        "y": 640,
+        "x": 520,
+        "y": 260,
         "wires": []
     },
     {
         "id": "584471c71208bfdd",
         "type": "mqtt in",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "",
         "topic": "aquarium/oxygen",
         "qos": "2",
@@ -586,8 +594,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 200,
-        "y": 760,
+        "x": 280,
+        "y": 380,
         "wires": [
             [
                 "3f249bd44942d216",
@@ -598,7 +606,7 @@
     {
         "id": "3f249bd44942d216",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "subscribe oxygen",
         "active": true,
         "tosidebar": true,
@@ -608,14 +616,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 430,
-        "y": 720,
+        "x": 510,
+        "y": 340,
         "wires": []
     },
     {
         "id": "4e72bb71fa812ab9",
         "type": "influxdb out",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "influxdb": "180f36df41b25787",
         "name": "influxdb oxygen",
         "measurement": "oxygen",
@@ -626,14 +634,14 @@
         "retentionPolicyV18Flux": "",
         "org": "aqua-org",
         "bucket": "aqua-bucket",
-        "x": 420,
-        "y": 780,
+        "x": 500,
+        "y": 400,
         "wires": []
     },
     {
         "id": "9be6c2a806dccbdb",
         "type": "mqtt in",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "",
         "topic": "aquarium/ammonia",
         "qos": "2",
@@ -643,8 +651,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 230,
-        "y": 920,
+        "x": 310,
+        "y": 540,
         "wires": [
             [
                 "da49202186adb3d6",
@@ -655,7 +663,7 @@
     {
         "id": "da49202186adb3d6",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "subscribe ammonia",
         "active": true,
         "tosidebar": true,
@@ -665,14 +673,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 450,
-        "y": 880,
+        "x": 530,
+        "y": 500,
         "wires": []
     },
     {
         "id": "6bd0cb185b24d065",
         "type": "influxdb out",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "influxdb": "180f36df41b25787",
         "name": "influxdb ammonia",
         "measurement": "ammonia",
@@ -683,14 +691,14 @@
         "retentionPolicyV18Flux": "",
         "org": "aqua-org",
         "bucket": "aqua-bucket",
-        "x": 450,
-        "y": 940,
+        "x": 530,
+        "y": 560,
         "wires": []
     },
     {
         "id": "e11eded67462b13e",
         "type": "mqtt in",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "",
         "topic": "aquarium/water_level",
         "qos": "2",
@@ -700,8 +708,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 240,
-        "y": 1060,
+        "x": 320,
+        "y": 680,
         "wires": [
             [
                 "cd8b402f25ab1c92",
@@ -712,7 +720,7 @@
     {
         "id": "cd8b402f25ab1c92",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "name": "subscribe water_level",
         "active": true,
         "tosidebar": true,
@@ -722,14 +730,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 460,
-        "y": 1020,
+        "x": 540,
+        "y": 640,
         "wires": []
     },
     {
         "id": "1770ede814eb4f8d",
         "type": "influxdb out",
-        "z": "f6f2187d.f17ca8",
+        "z": "494c2f7236aa3a08",
         "influxdb": "180f36df41b25787",
         "name": "influxdb water_level",
         "measurement": "water_level",
@@ -740,8 +748,8 @@
         "retentionPolicyV18Flux": "",
         "org": "aqua-org",
         "bucket": "aqua-bucket",
-        "x": 460,
-        "y": 1080,
+        "x": 540,
+        "y": 700,
         "wires": []
     }
 ]
