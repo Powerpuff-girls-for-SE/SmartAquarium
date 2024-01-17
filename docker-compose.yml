@@ -43,7 +43,7 @@ services:
 
   grafana:
     image: grafana/grafana
-    container_name: grafana-server
+    container_name: grafana
     restart: always
     depends_on:
       - influxdb
@@ -56,13 +56,14 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - grafana_data:/var/lib/grafana
+      - ./grafana:/var/lib/grafana
     networks:
       aquarium-net:
         ipv4_address: 172.10.0.12
 
   
   mosquitto-container:
+    container_name: mqtt-container
     restart: always
     image: eclipse-mosquitto
     volumes:
@@ -73,30 +74,35 @@ services:
       aquarium-net:
         ipv4_address: 172.10.0.13
 
-  # node-red:
-  #   image: nodered/node-red
-  #   environment:
-  #     - TZ=Europe/Amsterdam
-  #   ports:
-  #     - "1880:1880"
-  #   networks:
-  #     - local-net
-  #   volumes:
-  #     - node-red-data:/data
-
   node-red:
-    restart: always
-    build: docker-nodered/
+    container_name: node-red-container
+    build:
+      context: ./nodered/
+      dockerfile: Dockerfile
+    image: node-red-container:latest
     ports:
-      - 1880:1880
+      - "1880:1880"
     networks:
       aquarium-net:
         ipv4_address: 172.10.0.14
+    volumes:
+      - ./nodered/data:/data
+    depends_on:
+      - mosquitto-container
+      - influxdb
+
+  # node-red:
+  #   restart: always
+  #   build: docker-nodered/
+  #   ports:
+  #     - 1880:1880
+  #   networks:
+  #     aquarium-net:
+  #       ipv4_address: 172.10.0.14
 
 volumes:
-  grafana_data: 
+  #grafana_data: 
   influxdb_data: 
-  node-red-data: 
 
 networks:
   aquarium-net:
