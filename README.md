@@ -3,6 +3,15 @@ The IoT-Based Smart Aquarium System is an advanced solution designed to monitor 
 
 <img width="30%" alt="image" src="https://github.com/Powerpuff-girls-for-SE/SmartAquarium/assets/46968591/6bf31956-791a-4a45-9329-b7068b704065">
 
+## Steps to Execute Project
+1. Install Docker Desktop [link](https://www.docker.com/products/docker-desktop/)
+2. Start Docker Desktop
+3. Open the project folder in the terminal and run the following commands sequentially:
+```console
+docker-compose build
+docker-compose up
+```
+
 ## Functional Requirements
 The following are the functional requirements for the system.
 | ID | Requirement Name    | Description                                                                                                                            |
@@ -32,3 +41,8 @@ The following are the non-functional requirements of the system:
 * Mosquitto: for communication between the different project components
 * InfluxDB: for data storage
 * Grafana: for visualization
+
+## Data Visualization
+<img width="150%" alt="image" src="https://github.com/Powerpuff-girls-for-SE/SmartAquarium/assets/46968591/c86d1340-86d7-49a5-b3ce-8d264498af3d">
+
+
